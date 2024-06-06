@@ -30,6 +30,9 @@
             border: 2px solid #f5f5f5;
             border-radius: 15px;
         }
+        video{
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -46,7 +49,7 @@
         let video = null;
         let detector = null;
         let detections = [];
-        let videoVisibility = true;
+        let videoVisibility = false;
         let detecting = false;
 
         const videoAction = document.getElementById('videoAction');
@@ -63,11 +66,17 @@
             video = createCapture(VIDEO);
             video.size(640, 480);
         }
-
+        document.querySelector('video').style.display = 'none';
         function draw() {
             if (!video || !detecting) return;
-                image(video, 0, 0);
-                for (let i = 0; i < detections.length; i++) {
+
+    // Calcular la posición horizontal para centrar el video
+            let x = (width - video.width) / 2;
+
+    // Mostrar el video en el centro horizontal
+            image(video, 0, 0);
+
+            for (let i = 0; i < detections.length; i++) {
                 drawResult(detections[i]);
             }
         }
@@ -111,10 +120,10 @@
                 video.hide();
                 videoAction.innerText = 'Activar Video';
             } else {
-                video.show();
+                 video.show();
                 videoAction.innerText = 'Desactivar Video';
             }
-                videoVisibility = !videoVisibility;
+            videoVisibility = !videoVisibility;
         }
 
         function toggleDetecting() {
